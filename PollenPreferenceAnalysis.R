@@ -1,6 +1,6 @@
 ##
 
-#Analysis for lithium chloride manuscript
+#Analysis for pollen preference manuscript
 
 #Contact: cprouty@ufl.edu    https://scholar.google.com/citations?user=PpeDx78AAAAJ&hl=en
 
@@ -27,21 +27,26 @@ Activity$Observation <- as.factor(Activity$Observation)
 names(Weight)[1] <- "Cage"
 Weight$Cage <- as.factor(Weight$Cage)
 Weight$Day <- as.factor(Weight$Day)
+Change <- subset(Weight, Change > -1)
 names(Pollen)[1] <- "Cage"
 ###
 
 #Effect of treatment on percent change in pollen
-Change <- lmer(Change ~ Treatment + (1|Cage) + (1|Day), data = Change)
-anova(Change)
+WeightSum <- aggregate(AdjChange~Cage + Treatment, data=Weight, FUN=sum)
 
-lsm<-lsmeans (Change, list( ~ Treatment))
+Change <- mixed(AdjChange ~ Treatment + (1|Cage), data = WeightSum, method="LRT")
+nice(Change)
+
+lsm<-lsmeans (CM, list( ~ Treatment))
 cld(lsm)
 ###
 
 #Effect of treatment on activity observations
-Obs <- mixed(TotalObs ~ Treatment + (1|Cage), family = poisson (link = "log"), data = Pollen, method="LRT")
+ActSum <- aggregate(TimeSpent~ Cage+Treatment, data = Activity, FUN=sum)
+ActSum$TimeSpent.t <- ActSum$TimeSpent +1
+
+Obs <- mixed(TimeSpent.t ~ Treatment + (1|Cage), family = gaussian(link = "log"), data = ActSum, method="LRT")
 Obs
 
-lsm<-lsmeans (Obs, list( ~ Treatment))
-cld(lsm)
+summary(Obs)
 ###
