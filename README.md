@@ -1,2 +1,2 @@
 # Pollen-Preference
-For review purposes of manuscript: Manaswi et al. 'The attraction of western honey bees (Apis mellifera L.) to commercially available pollen substitutes'.
+For review purposes of manuscript: Manaswi et al. 2023 'Western honey bee (Apis mellifera L.) attraction to commercial pollen substitutes and wildflower pollen in vitro'.
